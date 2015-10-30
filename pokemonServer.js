@@ -27,7 +27,30 @@ http.createServer(function (req, res) {
         });
       });
     }
-  } 
+  }
+  else if (urlObj.pathname.indexOf("user") !=-1) {
+    console.log("Pokemon Database/User Collection");
+    if(req.method === "POST") {
+      console.log("POST user route");
+      var jsonData = "";
+      req.on('data', function (chunk) {
+        jsonData += chunk;
+      });
+      req.on('end', function () {
+        var reqObj = JSON.parse(jsonData);
+        console.log(reqObj);
+        var MongoClient = require('mongodb').MongoClient;
+        MongoClient.connect("mongodb://localhost/pokemon", function(err, db) {
+          if(err) throw err;
+          db.collection('Users').insert(reqObj,function(err, records) {
+            console.log("Record added as "+records[0]._id);
+            res.writeHead(200);
+            res.end("");
+          });
+        });
+      });
+    }
+  }
   else {
    // Normal static file
     fs.readFile(ROOT_DIR + urlObj.pathname, function (err,data) {

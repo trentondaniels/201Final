@@ -8,6 +8,7 @@
 
 		<button id="getAll" ng-click="getPokemon()">Show All Pokemon</button>
 		<br>
+		<button id="postNewUser" ng-click="postUser()">Test Post</button>
 		<div id="allPokemon" ng-if="pokemon.length">
 			<div ng-repeat="p in pokemon">
 				<img ng-src="{{p.avatarUrl}}" class="sprite">
