@@ -1,6 +1,8 @@
 app.controller('MainController', function($scope, $http) {
 	$scope.pokemon = [];
-$scope.roster = [
+	$scope.userLogged = false;
+	$scope.user = "";
+/*$scope.roster = [
               {
                 name:"Pikachu", 
                 avatarUrl: 'http://rs795.pbsrc.com/albums/yy232/PixKaruumi/Pokemon%20Pixels/Pikachu_Icon__free__by_Aminako.gif~c200',
@@ -49,17 +51,25 @@ $scope.roster = [
                 attack:40, 
                 defense:11
               }
-          ]
-	$scope.user = "";
+          ];
+          */
+          $scope.roster = [];
 	$scope.getPokemon = function() {
 		$http.get("pokemon").success(function(response) {
 			$scope.pokemon = response;
 		});
 	};
 	$scope.postUser = function() {
-		parameter = JSON.stringify({user: "Ash", win:0, loss:0, pokemon: $scope.roster});
+		parameter = JSON.stringify({user: $scope.user, win:0, loss:0, pokemon: $scope.roster});
 		$http.post("user", parameter).success(function(data, status, headers, config) {
 			console.log(data);
 		});
 	};
+	$scope.checkUserName = function() {
+		$scope.userLogged = true;
+	};
+  $scope.addToRoster = function(name) {
+    console.log(name);
+  };
 });
+

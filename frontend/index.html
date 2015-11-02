@@ -2,24 +2,53 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
 	</head>
 	<body ng-app="pokemonApp" ng-controller="MainController" data-ng-init="getPokemon()">
+		<div ng-hide="userLogged">
+			<h1>Welcome to Pokemon: Mongo</h1>
+			<form ng-submit="checkUserName()">
+				What is your name? <input type="text" ng-model="user">
+				<input type="button" value="Submit">
+			</form>
+		</div>
+		<div ng-show="userLogged">
+			<button id="getAll" ng-click="getPokemon()">Show All Pokemon</button>
+			<br>
+			<button id="postNewUser" ng-click="postUser()">Test Post</button>
+			<div class="container">
+				<!--Stuff dealing with the GET-->
+				<div id="allPokemon" ng-if="pokemon.length" class="col-md-6">
+					<div ng-repeat="p in pokemon">
+						<img ng-src="{{p.avatarUrl}}" class="sprite">
+						<h3>{{p.name}}</h3>
+						<ul>
+							<li>Type: {{p.type}}</li>
+							<li>HP: {{p.hp}}</li>
+							<li>Attack: {{p.attack}}</li>
+							<li>Defense: {{p.defense}}</li>
+						</ul>
+						<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
+						<hr>
+					</div>
+				</div>
 
-		<button id="getAll" ng-click="getPokemon()">Show All Pokemon</button>
-		<br>
-		<button id="postNewUser" ng-click="postUser()">Test Post</button>
-		<div id="allPokemon" ng-if="pokemon.length">
-			<div ng-repeat="p in pokemon">
-				<img ng-src="{{p.avatarUrl}}" class="sprite">
-				<h3 ng-bind="{{p.name}}"></h3>
-				<ul>
-					<li>Type: {{p.type}}</li>
-					<li>HP: {{p.hp}}</li>
-					<li>Attack: {{p.attack}}</li>
-					<li>Defense: {{p.defense}}</li>
-				</ul>
-				<hr>
+				<!--Stuff dealing with the POST-->
+				<h2>{{user}}'s Roster</h2>
+				<div id="myRoster" class="col-md-6">
+					<div ng-repeat="p in roster">
+						<img ng-src="{{p.avatarUrl}}" class="sprite">
+						<h3>{{p.name}}</h3>
+						<ul>
+							<li>Type: {{p.type}}</li>
+							<li>HP: {{p.hp}}</li>
+							<li>Attack: {{p.attack}}</li>
+							<li>Defense: {{p.defense}}</li>
+						</ul>
+						<hr>
+					</div>
+				</div>
 			</div>
 		</div>
 		<script src="js/app.js"></script>
