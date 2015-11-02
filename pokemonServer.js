@@ -43,6 +43,7 @@ http.createServer(function (req, res) {
         MongoClient.connect("mongodb://localhost/pokemon", function(err, db) {
           if(err) throw err;
           db.collection('Users').insert(reqObj,function(err, records) {
+	    if (err) throw err;
             console.log("Record added as "+records[0]._id);
             res.writeHead(200);
             res.end("");
