@@ -3,49 +3,87 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
 	</head>
 	<body ng-app="pokemonApp" ng-controller="MainController" data-ng-init="getPokemon()">
-		<div ng-hide="userLogged">
-			<h1>Welcome to Pokemon: Mongo</h1>
-			<form ng-submit="checkUserName()">
-				What is your name? <input type="text" ng-model="user">
-				<input type="button" value="Submit">
-			</form>
+		<div ng-hide="fightInit">
+			<!--User Select Screen-->
+			<div ng-hide="userLogged">
+				<h1>Welcome to Pokemon: Mongo</h1>
+				<form ng-submit="checkUserName()">
+					What is your name? <input type="text" ng-model="user">
+					<input type="submit" value="Submit">
+				</form>
+			</div>
+
+			<!--Roster Select Screen-->
+			<div ng-show="userLogged">
+				<button id="getAll" ng-click="getPokemon()">Show All Pokemon</button>
+				<div class="container">
+					<!--Stuff dealing with the GET-->
+					<div id="allPokemon" ng-if="pokemon.length" class="col-md-6">
+						<div ng-repeat="p in pokemon">
+							<img ng-src="{{p.avatarUrl}}" class="sprite">
+							<h3>{{p.name}}</h3>
+							<ul>
+								<li>Type: {{p.type}}</li>
+								<li>HP: {{p.hp}}</li>
+								<li>Attack: {{p.attack}}</li>
+								<li>Defense: {{p.defense}}</li>
+							</ul>
+							<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
+							<hr>
+						</div>
+					</div>
+
+					<!--Stuff dealing with the POST-->
+					<h2>{{user}}'s Roster</h2>
+					<div id="myRoster" class="col-md-6">
+						<div ng-repeat="p in roster">
+							<img ng-src="{{p.avatarUrl}}" class="sprite">
+							<h3>{{p.name}}</h3>
+							<ul>
+								<li>Type: {{p.type}}</li>
+								<li>HP: {{p.hp}}</li>
+								<li>Attack: {{p.attack}}</li>
+								<li>Defense: {{p.defense}}</li>
+							</ul>
+							<hr>
+						</div>
+						<button id="start-match" ng-click="startMatch()">Fight</button>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div ng-show="userLogged">
-			<button id="getAll" ng-click="getPokemon()">Show All Pokemon</button>
-			<br>
-			<button id="postNewUser" ng-click="postUser()">Test Post</button>
+		<!--Fight screen-->
+		<div ng-show="fightInit">
 			<div class="container">
-				<!--Stuff dealing with the GET-->
-				<div id="allPokemon" ng-if="pokemon.length" class="col-md-6">
-					<div ng-repeat="p in pokemon">
-						<img ng-src="{{p.avatarUrl}}" class="sprite">
-						<h3>{{p.name}}</h3>
-						<ul>
-							<li>Type: {{p.type}}</li>
-							<li>HP: {{p.hp}}</li>
-							<li>Attack: {{p.attack}}</li>
-							<li>Defense: {{p.defense}}</li>
-						</ul>
-						<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
+				<div class="col-md-2">
+					<h2>{{user}}</h2>
+					<button id="start-match" ng-click="startMatch()">Fight</button>
+					<div ng-repeat="p in player.pokemon">
+						<img ng-src="{{p.avatarUrl}}" class="sprite playable">
 						<hr>
 					</div>
 				</div>
-
-				<!--Stuff dealing with the POST-->
-				<h2>{{user}}'s Roster</h2>
-				<div id="myRoster" class="col-md-6">
-					<div ng-repeat="p in roster">
-						<img ng-src="{{p.avatarUrl}}" class="sprite">
-						<h3>{{p.name}}</h3>
-						<ul>
-							<li>Type: {{p.type}}</li>
-							<li>HP: {{p.hp}}</li>
-							<li>Attack: {{p.attack}}</li>
-							<li>Defense: {{p.defense}}</li>
-						</ul>
+				<div class="col-md-8">
+					<div class="row">
+						<div class= "col-md-3 col-md-offset-2">
+							<img ng-src="{{playerActive.avatarUrl}}" class="sprite">
+							<h5>{{playerActive.name}}</h5>
+							<h6>HP Remaining: {{playerActive.hp}}</h6>
+						</div>
+						<div class="col-md-3 col-md-offset-2">
+							<img ng-src="{{rivalActive.avatarUrl}}" class="sprite">
+							<h5>{{rivalActive.name}}</h5>
+							<h6>HP Remaining: {{rivalActive.hp}}</h6>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<h2>{{rival.user}}</h2>
+					<div ng-repeat="p in rival.pokemon">
+						<img ng-src="{{p.avatarUrl}}" class="sprite playable">
 						<hr>
 					</div>
 				</div>

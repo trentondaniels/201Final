@@ -43,10 +43,51 @@ http.createServer(function (req, res) {
         MongoClient.connect("mongodb://localhost/pokemon", function(err, db) {
           if(err) throw err;
           db.collection('Users').insert(reqObj,function(err, records) {
-	    if (err) throw err;
+            if(err) throw err;
             console.log("Record added as "+records[0]._id);
             res.writeHead(200);
             res.end("");
+          });
+        });
+      });
+    }
+    else if(req.method === "GET") {
+      console.log("In GET"); 
+      // Read all of the database entries and return them in a JSON array
+      var MongoClient = require('mongodb').MongoClient;
+      MongoClient.connect("mongodb://localhost/pokemon", function(err, db) {
+        if(err) throw err;
+        db.collection("Users", function(err, Users){
+          if(err) throw err;
+          Users.find(function(err, items){
+            items.toArray(function(err, itemArr){
+              console.log("Document Array: ");
+              console.log(itemArr);
+              res.writeHead(200);
+              res.end(JSON.stringify(itemArr));
+            });
+          });
+        });
+      });
+    }
+  }
+  else if(urlObj.pathname.indexOf("me") !=-1) {
+    console.log("Pokemon Database");
+    if(req.method === "GET") {
+      console.log("In GET");
+      var me = urlObj.query['activeUser'];
+      console.log(me);
+      // Read all of the database entries and return them in a JSON array
+      var MongoClient = require('mongodb').MongoClient;
+      MongoClient.connect("mongodb://localhost/pokemon", function(err, db) {
+        if(err) throw err;
+        db.collection("Users", function(err, Users){
+          if(err) throw err;
+          Users.findOne({user: me}, function(err, item){
+            console.log("ME: ");
+            console.log(item);
+            res.writeHead(200);
+            res.end(JSON.stringify(item));
           });
         });
       });
