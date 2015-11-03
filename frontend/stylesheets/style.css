@@ -1,3 +1,24 @@
 .sprite {
   width: 100px;
 }
+
+.playable {
+	background-color: blue;
+}
+
+.KO {
+	background-color: red;
+}
+
+.fight-arena {
+	border: solid;
+	background-color: green;
+	border-radius: 15px;
+	padding: 15px;
+	margin-top: 75px;
+}
+
+#fightContainer {
+	margin-top: 25px;
+}
+
