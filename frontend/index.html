@@ -18,10 +18,7 @@
 
 			<!--Roster Select Screen-->
 			<div ng-show="userLogged">
-				
-				
-				
-				<h3>Filter Pokemon</h3>
+								<h3>Filter Pokemon</h3>
 
 <select id ="ddl" value="All" ng-model="data.singleSelect">
 	 <option value="All" selected>All</option>
@@ -37,20 +34,26 @@
   <option value='Dragon'>Dragon</option>
 </select>
 
-
-
-
 				<div class="container">
-					<!--Stuff dealing with the GET-->
-					<div id="allPokemon" ng-if="pokemon.length" class="col-md-6">
-							<!--<div ng-if="p.type == 'Electric'">-->
-						
-							
-					<div ng-if="'All' == data.singleSelect">
-					<div ng-repeat="p in pokemon">
-						
-					
-								
+					<div id="allPokemon" ng-if="pokemon.length" class="col-md-6">	
+						<div ng-if="'All' == data.singleSelect">
+							<div ng-repeat="p in pokemon">	
+								<img ng-src="{{p.avatarUrl}}" class="sprite">
+								<h3>{{p.name}}</h3>
+								<ul>
+									<li>Type: {{p.type}}</li>
+									<li>HP: {{p.hp}}</li>
+									<li>Attack: {{p.attack}}</li>
+									<li>Defense: {{p.defense}}</li>
+								</ul>
+								<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
+								<hr>
+							</div>	
+						</div>
+
+						<div ng-if="'All' != data.singleSelect">
+							<div ng-repeat="p in pokemon">
+								<div ng-if="p.type == data.singleSelect">
 									<img ng-src="{{p.avatarUrl}}" class="sprite">
 									<h3>{{p.name}}</h3>
 									<ul>
@@ -58,45 +61,13 @@
 										<li>HP: {{p.hp}}</li>
 										<li>Attack: {{p.attack}}</li>
 										<li>Defense: {{p.defense}}</li>
-										
 									</ul>
 									<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
 									<hr>
-							</div>
-						
-					</div>
-				</div>
-
-
-
-
-				<div ng-if="'All' != data.singleSelect">
-					<div ng-repeat="p in pokemon">
-						
-						<div ng-if="p.type == data.singleSelect">
-								
-									<img ng-src="{{p.avatarUrl}}" class="sprite">
-									<h3>{{p.name}}</h3>
-									<ul>
-										<li>Type: {{p.type}}</li>
-										<li>HP: {{p.hp}}</li>
-										<li>Attack: {{p.attack}}</li>
-										<li>Defense: {{p.defense}}</li>
-										
-									</ul>
-									<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
-									<hr>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				
-				
-				
-				
-				
-				
-				
 					<!--Stuff dealing with the POST-->
 					<h2>{{user}}'s Roster</h2>
 					<div id="myRoster" class="col-md-6">
@@ -111,23 +82,23 @@
 							</ul>
 							<hr>
 						</div>
-						<button id="start-match" ng-click="startMatch()">Fight</button>
+						<button ng-if="roster.length" id="start-match" ng-click="startMatch()">Fight</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Fight screen-->
-		<div ng-show="fightInit">
+		<div id="fightContainer" ng-show="fightInit">
 			<div class="container">
 				<div class="col-md-2">
 					<h2>{{user}}</h2>
-					<button id="start-match" ng-click="startMatch()">Fight</button>
 					<div ng-repeat="p in player.pokemon">
-						<img ng-src="{{p.avatarUrl}}" class="sprite playable">
+						<img ng-src="{{p.avatarUrl}}" class="sprite playable" id="player{{p.name}}">
+						<button ng-show="switchMode && (p.hp != 0)" ng-click="iChooseYou(p.name)">I Choose you {{p.name}}!</button>
 						<hr>
 					</div>
 				</div>
-				<div class="col-md-8">
+				   <div class="col-md-7 col-sm-offset-1 fight-arena">
 					<div class="row">
 						<div class= "col-md-3 col-md-offset-2">
 							<img ng-src="{{playerActive.avatarUrl}}" class="sprite">
@@ -140,11 +111,19 @@
 							<h6>HP Remaining: {{rivalActive.hp}}</h6>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-8">
+							<h3 ng-show="battleOver"> {{winner}} is victorious!</h3>
+							<button ng-click="attack()" ng-hide="battleOver || switchMode">Attack</button>
+							<button ng-click="changePokemon()" ng-hide="battleOver || switchMode">Switch Pokemon</button>
+							<button id="start-match" ng-click="playAgain()" ng-show="battleOver">Play Again</button>
+						</div>
+					</div>
 				</div>
 				<div class="col-md-2">
 					<h2>{{rival.user}}</h2>
 					<div ng-repeat="p in rival.pokemon">
-						<img ng-src="{{p.avatarUrl}}" class="sprite playable">
+						<img ng-src="{{p.avatarUrl}}" class="sprite playable" id="rival{{p.name}}">
 						<hr>
 					</div>
 				</div>
