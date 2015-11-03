@@ -18,6 +18,22 @@
 
 			<!--Roster Select Screen-->
 			<div ng-show="userLogged">
+				
+				 <h3>Filter Pokemon</h3>
+
+				<select id ="ddl" name="ddl" onmousedown="this.value='';" onchange="jsFunction(this.value);">
+				  <option value='Fire'>Fire</option>
+				  <option value='Water'>Water</option>
+				  <option value='Electric'>Electric</option>
+				  <option value='Grass'>Grass</option>
+				  <option value='Ice'>Ice</option>
+				  <option value='Psychic'>Psychic</option>
+				  <option value='Fighting'>Fighting</option>
+				  <option value='Rock'>Rock</option>
+				  <option value='Fire'>Fire</option>
+				  <option value='Dragon'>Dragon</option>
+				</select>
+				
 				<button id="getAll" ng-click="getPokemon()">Show All Pokemon</button>
 				<div class="container">
 					<!--Stuff dealing with the GET-->
