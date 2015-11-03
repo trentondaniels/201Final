@@ -19,39 +19,84 @@
 			<!--Roster Select Screen-->
 			<div ng-show="userLogged">
 				
-				 <h3>Filter Pokemon</h3>
-
-				<select id ="ddl" name="ddl" onmousedown="this.value='';" onchange="jsFunction(this.value);">
-				  <option value='Fire'>Fire</option>
-				  <option value='Water'>Water</option>
-				  <option value='Electric'>Electric</option>
-				  <option value='Grass'>Grass</option>
-				  <option value='Ice'>Ice</option>
-				  <option value='Psychic'>Psychic</option>
-				  <option value='Fighting'>Fighting</option>
-				  <option value='Rock'>Rock</option>
-				  <option value='Fire'>Fire</option>
-				  <option value='Dragon'>Dragon</option>
-				</select>
 				
-				<button id="getAll" ng-click="getPokemon()">Show All Pokemon</button>
+				
+				<h3>Filter Pokemon</h3>
+
+<select id ="ddl" value="All" ng-model="data.singleSelect">
+	 <option value="All" selected>All</option>
+  <option value='Fire'>Fire</option>
+  <option value='Water'>Water</option>
+  <option value='Electric'>Electric</option>
+  <option value='Grass'>Grass</option>
+  <option value='Ice'>Ice</option>
+  <option value='Psychic'>Psychic</option>
+  <option value='Fighting'>Fighting</option>
+  <option value='Rock'>Rock</option>
+  <option value='Fire'>Fire</option>
+  <option value='Dragon'>Dragon</option>
+</select>
+
+
+
+
 				<div class="container">
 					<!--Stuff dealing with the GET-->
 					<div id="allPokemon" ng-if="pokemon.length" class="col-md-6">
-						<div ng-repeat="p in pokemon">
-							<img ng-src="{{p.avatarUrl}}" class="sprite">
-							<h3>{{p.name}}</h3>
-							<ul>
-								<li>Type: {{p.type}}</li>
-								<li>HP: {{p.hp}}</li>
-								<li>Attack: {{p.attack}}</li>
-								<li>Defense: {{p.defense}}</li>
-							</ul>
-							<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
-							<hr>
+							<!--<div ng-if="p.type == 'Electric'">-->
+						
+							
+					<div ng-if="'All' == data.singleSelect">
+					<div ng-repeat="p in pokemon">
+						
+					
+								
+									<img ng-src="{{p.avatarUrl}}" class="sprite">
+									<h3>{{p.name}}</h3>
+									<ul>
+										<li>Type: {{p.type}}</li>
+										<li>HP: {{p.hp}}</li>
+										<li>Attack: {{p.attack}}</li>
+										<li>Defense: {{p.defense}}</li>
+										
+									</ul>
+									<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
+									<hr>
+							</div>
+						
+					</div>
+				</div>
+
+
+
+
+				<div ng-if="'All' != data.singleSelect">
+					<div ng-repeat="p in pokemon">
+						
+						<div ng-if="p.type == data.singleSelect">
+								
+									<img ng-src="{{p.avatarUrl}}" class="sprite">
+									<h3>{{p.name}}</h3>
+									<ul>
+										<li>Type: {{p.type}}</li>
+										<li>HP: {{p.hp}}</li>
+										<li>Attack: {{p.attack}}</li>
+										<li>Defense: {{p.defense}}</li>
+										
+									</ul>
+									<button id="add-to-roster" ng-click="addToRoster(p.name)">Add to Roster</button>
+									<hr>
+							</div>
 						</div>
 					</div>
-
+				</div>
+				
+				
+				
+				
+				
+				
+				
 					<!--Stuff dealing with the POST-->
 					<h2>{{user}}'s Roster</h2>
 					<div id="myRoster" class="col-md-6">
