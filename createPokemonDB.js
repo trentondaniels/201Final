@@ -22,7 +22,7 @@ MongoClient.connect("mongodb://localhost/", function(err, db) {
           }
         );
         addObject(Original152, {name:"Voltorb", avatarUrl: 
-            'http://i43.tinypic.com/a3co74.png',
+            'https://lh5.googleusercontent.com/nOYOsIs9ruSM-iKbbU0T1cvG8_cV42dXpUSRjQFtvQRHQTBfHDZKXZzMkKxlfkRqZINZlmyeXFVb6y-6Fbv_YU4fOV4vpnsBL4pAXPZL2aLD-TmrMg',
             type:"Electric", hp:65, attack:15, defense:10});
         addObject(Original152, {name:"Charizard", avatarUrl: 
             'http://media.giphy.com/media/GN8fj5G9F0NnW/giphy.gif',
@@ -88,8 +88,3 @@ MongoClient.connect("mongodb://localhost/", function(err, db) {
     );
   setTimeout(function(){ db.close(); }, 3000);
 });
-
-
-/*
-Sort by type, alphebetical, attack, defense, HP
-*/
